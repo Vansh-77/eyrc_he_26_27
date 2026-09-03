@@ -11,6 +11,8 @@ from geometry_msgs.msg import Twist
 import math
 import numpy as np
 
+from ament_index_python.packages import get_package_share_directory
+
 
 def inverse_kinematics(vx, vy, wz):
 
@@ -72,12 +74,12 @@ def main():
     ros_thread.start()
 
     xml_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "models",
-        "holonomic_bot",
-        "mujoco",
-        "hb.xml",
-    )
+    get_package_share_directory('prep'),
+    'models',
+    'holonomic_bot',
+    'mujoco',
+    'hb.xml'
+)
 
     model = mujoco.MjModel.from_xml_path(xml_path)
     data = mujoco.MjData(model)
