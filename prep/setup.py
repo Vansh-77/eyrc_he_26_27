@@ -48,6 +48,7 @@ setup(
     entry_points={
         'console_scripts': [
              'mujoco_sim = prep.mujoco_sim:main',
+             'camera_node = prep.camera_node:main',
         ],
     },
 )

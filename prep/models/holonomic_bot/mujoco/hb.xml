@@ -1,184 +1,315 @@
 <mujoco model="hb_bot">
-  <compiler angle="radian" meshdir="../meshes"/>
+  <compiler angle="radian" meshdir="../meshes" />
 
   <option
-      timestep="0.002"
-      gravity="0 0 -9.81"
-      integrator="implicitfast"
-      cone="elliptic"/>
+    timestep="0.002"
+    gravity="0 0 -9.81"
+    integrator="implicitfast"
+    cone="elliptic" />
 
   <visual>
-    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
-    <rgba haze="0.15 0.25 0.35 1"/>
-    <global azimuth="45" elevation="-20"/>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global azimuth="45" elevation="-20" offwidth="640" offheight="480" />
   </visual>
 
-  <size njmax="1000" nconmax="500"/>
+  <size njmax="1000" nconmax="500" />
 
   <asset>
-    <mesh name="bot" file="bot.obj"/>
-    <mesh name="rim" file="rim.stl"/>
-    <mesh name="roller" file="roller.stl"/>
+    <mesh name="bot" file="bot.obj" />
+    <mesh name="rim" file="rim.stl" />
+    <mesh name="roller" file="roller.stl" />
   </asset>
   <asset>
-    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
-    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
-      markrgb="0.8 0.8 0.8" width="300" height="300"/>
-    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+      height="3072" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+      rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+      reflectance="0.2" />
+    <texture
+      name="aruco_0"
+      type="2d"
+      file="../textures/aruco_0.png" />
+
+    <material
+      name="aruco_0"
+      texture="aruco_0"
+      texuniform="false"
+      texrepeat="1 1"
+      rgba="1 1 1 1"
+    />
+    <texture
+      name="aruco_1"
+      type="2d"
+      file="../textures/aruco_1.png" />
+
+    <material
+      name="aruco_1"
+      texture="aruco_1"
+      texuniform="false"
+      texrepeat="1 1"
+      rgba="1 1 1 1" />
+
+
+    <texture
+      name="aruco_2"
+      type="2d"
+      file="../textures/aruco_2.png" />
+
+    <material
+      name="aruco_2"
+      texture="aruco_2"
+      texuniform="false"
+      texrepeat="1 1"
+      rgba="1 1 1 1" />
+
+
+    <texture
+      name="aruco_3"
+      type="2d"
+      file="../textures/aruco_3.png" />
+
+    <material
+      name="aruco_3"
+      texture="aruco_3"
+      texuniform="false"
+      texrepeat="1 1"
+      rgba="1 1 1 1" />
+
+
+    <texture
+      name="aruco_4"
+      type="2d"
+      file="../textures/aruco_4.png" />
+
+    <material
+      name="aruco_4"
+      texture="aruco_4"
+      texuniform="false"
+      texrepeat="1 1"
+      rgba="1 1 1 1" />
+
   </asset>
 
 
   <worldbody>
-    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true" />
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" friction="1 0.005 0.0001"
-      condim="3"/>
-    <body name="base_link" pos="0 0 0.3">
-    <freejoint/>
-    <geom name="base_link_collision" pos="0 0 0.0" euler="1.570796327 0 0" type="mesh" mesh="bot"/>
-    <body name="rim_left_link" pos="-0.0450333 0.026 0" quat="0.612372 0.612372 0.353553 0.353553">
-      <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758" diaginertia="9.40333e-07 6.63684e-07 6.63684e-07"/>
-      <joint name="rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-      <geom type="mesh" rgba="0.3 0 0 1" mesh="rim"/>
-      <body name="roller_e_rim_left_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_e_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
+      condim="3" />
+    <camera name="overhead_camera"
+      pos="0 0 1.5"
+      quat="1 0 0 0"
+      fovy="60" />
+    <!-- Arena ArUco markers -->
+
+    <geom
+      name="aruco_1"
+      type="box"
+      size="0.04 0.04 0.001"
+      pos="-1.0 0.7 0.001"
+      material="aruco_1"
+      contype="0"
+      conaffinity="0" />
+
+    <geom
+      name="aruco_2"
+      type="box"
+      size="0.04 0.04 0.001"
+      pos="1.0 0.7 0.001"
+      material="aruco_2"
+      contype="0"
+      conaffinity="0" />
+
+    <geom
+      name="aruco_3"
+      type="box"
+      size="0.04 0.04 0.001"
+      pos="1.0 -0.7 0.001"
+      material="aruco_3"
+      contype="0"
+      conaffinity="0" />
+
+    <geom
+      name="aruco_4"
+      type="box"
+      size="0.04 0.04 0.001"
+      pos="-1.0 -0.7 0.001"
+      material="aruco_4"
+      contype="0"
+      conaffinity="0" />
+    <body name="base_link" pos="0 0 0.05">
+      <freejoint />
+      <geom
+        name="aruco_0"
+        type="box"
+        size="0.04 0.04 0.001"
+        pos="0 0 0.045"
+        material="aruco_0"
+        contype="0"
+        conaffinity="0" />
+      <geom name="base_link_collision" pos="0 0 0.0" euler="1.570796327 0 0" type="mesh" mesh="bot" />
+      <body name="rim_left_link" pos="-0.0450333 0.026 0" quat="0.612372 0.612372 0.353553 0.353553">
+        <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758"
+          diaginertia="9.40333e-07 6.63684e-07 6.63684e-07" />
+        <joint name="rim_left_joint" pos="0 0 0" axis="0 0 1" />
+        <geom type="mesh" rgba="0.3 0 0 1" mesh="rim" />
+        <body name="roller_e_rim_left_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_e_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_ne_rim_left_link" pos="0.0095813 0.0095813 -0.0055"
+          quat="0.653281 -0.653281 -0.270598 0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_ne_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_n_rim_left_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_n_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_nw_rim_left_link" pos="-0.0095813 0.0095813 -0.0055"
+          quat="0.270598 -0.270598 -0.653281 0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_nw_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_w_rim_left_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_w_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_sw_rim_left_link" pos="-0.0095813 -0.0095813 -0.0055"
+          quat="0.270598 -0.270598 0.653281 -0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_sw_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_s_rim_left_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_s_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_se_rim_left_link" pos="0.0095813 -0.0095813 -0.0055"
+          quat="0.653281 -0.653281 0.270598 -0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_se_rim_left_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
       </body>
-      <body name="roller_ne_rim_left_link" pos="0.0095813 0.0095813 -0.0055" quat="0.653281 -0.653281 -0.270598 0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_ne_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
+      <body name="rim_back_link" pos="0 -0.052 0" quat="0 0 0.707107 0.707107">
+        <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758"
+          diaginertia="9.40333e-07 6.63684e-07 6.63684e-07" />
+        <joint name="rim_back_joint" pos="0 0 0" axis="0 0 1" />
+        <geom type="mesh" rgba="0 0.3 0 1" mesh="rim" />
+        <body name="roller_e_rim_back_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_e_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_ne_rim_back_link" pos="0.0095813 0.0095813 -0.0055"
+          quat="0.653281 -0.653281 -0.270598 0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_ne_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_n_rim_back_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_n_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_nw_rim_back_link" pos="-0.0095813 0.0095813 -0.0055"
+          quat="0.270598 -0.270598 -0.653281 0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_nw_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_w_rim_back_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_w_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_sw_rim_back_link" pos="-0.0095813 -0.0095813 -0.0055"
+          quat="0.270598 -0.270598 0.653281 -0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_sw_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_s_rim_back_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_s_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_se_rim_back_link" pos="0.0095813 -0.0095813 -0.0055"
+          quat="0.653281 -0.653281 0.270598 -0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_se_rim_back_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
       </body>
-      <body name="roller_n_rim_left_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_n_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_nw_rim_left_link" pos="-0.0095813 0.0095813 -0.0055" quat="0.270598 -0.270598 -0.653281 0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_nw_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_w_rim_left_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_w_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_sw_rim_left_link" pos="-0.0095813 -0.0095813 -0.0055" quat="0.270598 -0.270598 0.653281 -0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_sw_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_s_rim_left_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_s_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_se_rim_left_link" pos="0.0095813 -0.0095813 -0.0055" quat="0.653281 -0.653281 0.270598 -0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_se_rim_left_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
+      <body name="rim_right_link" pos="0.0450333 0.026 0"
+        quat="0.612372 0.612372 -0.353553 -0.353553">
+        <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758"
+          diaginertia="9.40333e-07 6.63684e-07 6.63684e-07" />
+        <joint name="rim_right_joint" pos="0 0 0" axis="0 0 1" />
+        <geom type="mesh" rgba="0 0 0.3 1" mesh="rim" />
+        <body name="roller_e_rim_right_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_e_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_ne_rim_right_link" pos="0.0095813 0.0095813 -0.0055"
+          quat="0.653281 -0.653281 -0.270598 0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_ne_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_n_rim_right_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_n_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_nw_rim_right_link" pos="-0.0095813 0.0095813 -0.0055"
+          quat="0.270598 -0.270598 -0.653281 0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_nw_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_w_rim_right_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_w_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_sw_rim_right_link" pos="-0.0095813 -0.0095813 -0.0055"
+          quat="0.270598 -0.270598 0.653281 -0.653281">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_sw_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_s_rim_right_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_s_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
+        <body name="roller_se_rim_right_link" pos="0.0095813 -0.0095813 -0.0055"
+          quat="0.653281 -0.653281 0.270598 -0.270598">
+          <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08" />
+          <joint name="roller_se_rim_right_joint" pos="0 0 0" axis="0 0 1" />
+          <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller" />
+        </body>
       </body>
     </body>
-    <body name="rim_back_link" pos="0 -0.052 0" quat="0 0 0.707107 0.707107">
-      <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758" diaginertia="9.40333e-07 6.63684e-07 6.63684e-07"/>
-      <joint name="rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-      <geom type="mesh" rgba="0 0.3 0 1" mesh="rim"/>
-      <body name="roller_e_rim_back_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_e_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_ne_rim_back_link" pos="0.0095813 0.0095813 -0.0055" quat="0.653281 -0.653281 -0.270598 0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_ne_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_n_rim_back_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_n_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_nw_rim_back_link" pos="-0.0095813 0.0095813 -0.0055" quat="0.270598 -0.270598 -0.653281 0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_nw_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_w_rim_back_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_w_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_sw_rim_back_link" pos="-0.0095813 -0.0095813 -0.0055" quat="0.270598 -0.270598 0.653281 -0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_sw_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_s_rim_back_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_s_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_se_rim_back_link" pos="0.0095813 -0.0095813 -0.0055" quat="0.653281 -0.653281 0.270598 -0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_se_rim_back_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-    </body>
-    <body name="rim_right_link" pos="0.0450333 0.026 0" quat="0.612372 0.612372 -0.353553 -0.353553">
-      <inertial pos="0 0 -0.000343" quat="0.5 0.5 -0.5 0.5" mass="0.00835758" diaginertia="9.40333e-07 6.63684e-07 6.63684e-07"/>
-      <joint name="rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-      <geom type="mesh" rgba="0 0 0.3 1" mesh="rim"/>
-      <body name="roller_e_rim_right_link" pos="0.01355 0 0.0055" quat="0.707107 -0.707107 0 0">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_e_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_ne_rim_right_link" pos="0.0095813 0.0095813 -0.0055" quat="0.653281 -0.653281 -0.270598 0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_ne_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_n_rim_right_link" pos="0 0.01355 0.0055" quat="0.5 -0.5 -0.5 0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_n_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_nw_rim_right_link" pos="-0.0095813 0.0095813 -0.0055" quat="0.270598 -0.270598 -0.653281 0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_nw_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_w_rim_right_link" pos="-0.01355 0 0.0055" quat="0 0 -0.707107 0.707107">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_w_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_sw_rim_right_link" pos="-0.0095813 -0.0095813 -0.0055" quat="0.270598 -0.270598 0.653281 -0.653281">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_sw_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_s_rim_right_link" pos="0 -0.01355 0.0055" quat="0.5 -0.5 0.5 -0.5">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_s_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-      <body name="roller_se_rim_right_link" pos="0.0095813 -0.0095813 -0.0055" quat="0.653281 -0.653281 0.270598 -0.270598">
-        <inertial pos="0 0 0" mass="0.00113845" diaginertia="2.53776e-08 2.53776e-08 1.47666e-08"/>
-        <joint name="roller_se_rim_right_joint" pos="0 0 0" axis="0 0 1"/>
-        <geom type="mesh" rgba="0.1 0.1 0.1 1" mesh="roller"/>
-      </body>
-    </body>
-    </body>
-    
+
   </worldbody>
 
   <actuator>
-  <velocity name="rim_left_vel"  joint="rim_left_joint"  kv="0.05"/>
-  <velocity name="rim_back_vel"  joint="rim_back_joint"  kv="0.05"/>
-  <velocity name="rim_right_vel" joint="rim_right_joint" kv="0.05"/>
-</actuator>
+    <velocity name="rim_left_vel" joint="rim_left_joint" kv="0.05" />
+    <velocity name="rim_back_vel" joint="rim_back_joint" kv="0.05" />
+    <velocity name="rim_right_vel" joint="rim_right_joint" kv="0.05" />
+  </actuator>
 
 
 </mujoco>
