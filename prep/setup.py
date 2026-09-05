@@ -49,6 +49,8 @@ setup(
         'console_scripts': [
              'mujoco_sim = prep.mujoco_sim:main',
              'camera_node = prep.camera_node:main',
+             'localization_node = prep.localization_node:main',
+             'control_node = prep.control:main'
         ],
     },
 )
